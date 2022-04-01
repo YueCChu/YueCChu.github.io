@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Actf[2020]新生赛_easyre writeup | Yuechu</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="http://yuechu.note.cn/favicon.ico?v=1648812134951">
+<link rel="stylesheet" href="http://yuechu.note.cn/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="ACTF[2020]新生赛 easyre
+
+
+首先拖进ExeinfoPE查壳，发现为 UPX3.95
+
+
+使用OD进行脱壳
+
+
+脱壳后发现程序无法运行，且无法用ImpRec修复
+
+
+直接拖入Ida，F5反编译，看到代码如下
+int __cd..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="http://yuechu.note.cn">
+        <img src="http://yuechu.note.cn/images/avatar.png?v=1648812134951" class="site-logo">
+        <h1 class="site-title">Yuechu</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      这个人很懒，什么也没有写。。
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="http://yuechu.note.cn/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Actf[2020]新生赛_easyre writeup</h2>
+            <div class="post-date">2022-04-01</div>
+            
+            <div class="post-content" v-pre>
+              <h2 id="actf2020新生赛-easyre">ACTF[2020]新生赛 easyre</h2>
+<ol>
+<li>
+<p>首先拖进ExeinfoPE查壳，发现为 UPX3.95</p>
+</li>
+<li>
+<p>使用OD进行脱壳</p>
+</li>
+<li>
+<p>脱壳后发现程序无法运行，且无法用ImpRec修复</p>
+</li>
+<li>
+<p>直接拖入Ida，F5反编译，看到代码如下<br>
+int __cdecl main(int argc, const char **argv, const char **envp)<br>
+{<br>
+_BYTE v4[12]; // [esp+12h] [ebp-2Eh] BYREF<br>
+_DWORD v5[3]; // [esp+1Eh] [ebp-22h]<br>
+char v6[5]; // [esp+2Ah] [ebp-16h] BYREF<br>
+int v7; // [esp+2Fh] [ebp-11h]<br>
+int v8; // [esp+33h] [ebp-Dh]<br>
+int v9; // [esp+37h] [ebp-9h]<br>
+char v10; // [esp+3Bh] [ebp-5h]<br>
+int i; // [esp+3Ch] [ebp-4h]</p>
+<p>sub_401A10();<br>
+qmemcpy(v4, &quot;<em>F'&quot;N,&quot;(I?+@&quot;, sizeof(v4));<br>
+sub_401C80(aPleaseInput);<br>
+sub_401C88(&quot;%s&quot;, v6);<br>
+if ( v6[0] != 'A' || v6[1] != 'C' || v6[2] != 'T' || v6[3] != 'F' || v6[4] != '{' || v10 != '}' )<br>
+return 0;<br>
+v5[0] = v7;<br>
+v5[1] = v8;<br>
+v5[2] = v9;<br>
+for ( i = 0; i &lt;= 11; ++i )<br>
+{<br>
+if ( v4[i] != byte_402000[</em>((char *)v5 + i) - 1] )<br>
+return 0;<br>
+}<br>
+sub_401C80(aYouAreCorrect);<br>
+return 0;<br>
+}</p>
+</li>
+<li>
+<p>可发现flag格式为  <strong>ACTF{}</strong>，由for循环可知flag长度为12</p>
+</li>
+<li>
+<p>同时可以看出flag为v6到v10存储，其中v7, v8, v9为int类型，故v7-v9分别存储4位</p>
+</li>
+<li>
+<p>从 if 中判断为利用 v5 从 byte_402000 中选取数据与v4进行比对</p>
+</li>
+<li>
+<p>双击byte_402000，可看到其存储内容为 （**~**这个符号千万不可落下）</p>
+</li>
+</ol>
+<blockquote>
+<p>~}|{zyxwvutsrqponmlkjihgfedcba_^][ZYXWVUTSRQPONMLKJIHGFEDCBA@?&gt;=&lt;;:9876543210/.-,+*)(',27h,'&amp;%$# !&quot;`</p>
+</blockquote>
+<ol start="9">
+<li>编写脚本<br>
+key = r'~}|{zyxwvutsrqponmlkjihgfedcba`_^][ZYXWVUTSRQPONMLKJIHGFEDCBA@?&gt;=&lt;;:9876543210/.-,+*)(' + chr(0x27) + '&amp;%$# !&quot;'<br>
+v5 = []<br>
+v4 = '*F'&quot;N,&quot;(I?+@'  # v4内容<br>
+flag = ''<br>
+for i in v4:<br>
+v5.append(key.find(i) + 1)<br>
+for i in v5:<br>
+flag += chr(i)<br>
+print('flag{' + flag + '}')</li>
+<li>运行即得到flag</li>
+</ol>
+<blockquote>
+<p>flag{U9X_1S_W6@T?}</p>
+</blockquote>
+
+            </div>
+            
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
